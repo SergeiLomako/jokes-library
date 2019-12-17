@@ -12,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
                 uri: configService.get('MONGODB_URI'),
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+                useCreateIndex: true,
             }),
         }),
     ],
