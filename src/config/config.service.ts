@@ -20,7 +20,7 @@ export class ConfigService {
             'HOST',
             'PORT',
             'API_KEY',
-            'MONGO_URL',
+            'MONGODB_URI',
             'JWT_EXPIRES',
         ];
         return ENV_VARIABLES.reduce((obj, variable) => {
@@ -37,7 +37,7 @@ export class ConfigService {
             HOST: Joi.string().default('localhost'),
             PORT: Joi.number().default(3000),
             API_KEY: Joi.string().min(30).max(50).required(),
-            MONGO_URL: Joi.string().default('mongodb://localhost/nest'),
+            MONGODB_URI: Joi.string().default('mongodb://localhost/nest'),
             JWT_EXPIRES: Joi.string().default('1h'),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(envConfig);
