@@ -6,6 +6,8 @@ import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
+    hiddenFields = { password: 0 };
+
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         private readonly hashService: HashService,
@@ -13,8 +15,8 @@ export class UsersService {
 
     async create(user: User): Promise<User> {
         user.password = await this.hashService.make(user.password);
-        const createdUser = new this.userModel(user);
-        return await createdUser.save();
+
+        return await this.userModel.create(user);
     }
 
     async update(id: string, user: User): Promise<User> {
@@ -22,10 +24,13 @@ export class UsersService {
             user.password = await this.hashService.make(user.password);
         }
 
-        return await this.userModel.findByIdAndUpdate(id, user, { new: true });
+        return await this.userModel.findByIdAndUpdate(id, user, {
+            new: true,
+            fields: this.hiddenFields,
+        });
     }
 
-    async findByEmail(email: string): Promise<User> {
-        return await this.userModel.findOne({ email });
+    async findByField(field: string, value: string | number): Promise<User | null> {
+        return await this.userModel.findOne({ [field]: value }, { fields: this.hiddenFields });
     }
 }
