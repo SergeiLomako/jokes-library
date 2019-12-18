@@ -5,15 +5,17 @@ import { ConfigModule } from '../config/config.module';
 import { UsersModule } from '../../resources/users/users.module';
 import { HashModule } from '../hash/hash.module';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
     imports: [
         UsersModule,
         HashModule,
+        ConfigModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
-                secretOrPrivateKey: configService.get('API_KEY'),
+                secret: configService.get('API_KEY'),
                 signOptions: {
                     expiresIn: configService.get('JWT_EXPIRES'),
                 },
@@ -21,7 +23,7 @@ import { JwtModule } from '@nestjs/jwt';
             inject: [ConfigService],
         }),
     ],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy],
     exports: [AuthService],
 })
 

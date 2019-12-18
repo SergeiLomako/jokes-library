@@ -19,18 +19,7 @@ export class UsersService {
         return await this.userModel.create(user);
     }
 
-    async update(id: string, user: User): Promise<User> {
-        if (user.password) {
-            user.password = await this.hashService.make(user.password);
-        }
-
-        return await this.userModel.findByIdAndUpdate(id, user, {
-            new: true,
-            fields: this.hiddenFields,
-        });
-    }
-
     async findByField(field: string, value: string | number): Promise<User | null> {
-        return await this.userModel.findOne({ [field]: value }, { fields: this.hiddenFields });
+        return await this.userModel.findOne({ [field]: value });
     }
 }

@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HashService } from '../hash/hash.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../resources/users/interfaces/user.interface';
@@ -13,7 +13,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async validateUser(payload: LoginDto): Promise<any> {
+    async validateUser(payload: LoginDto): Promise<User | null> {
         const { email, password } = payload;
         let result = null;
         const user = await this.userService.findByField('email', email);
