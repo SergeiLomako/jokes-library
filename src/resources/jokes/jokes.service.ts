@@ -61,6 +61,10 @@ export class JokesService {
         return await this.jokeModel.create(joke);
     }
 
+    async createMany(jokes: Joke[]): Promise<any> {
+        return await this.jokeModel.insertMany(jokes);
+    }
+
     async updateOrFail(id: string, payload): Promise<Joke> {
         const updatedJoke = await this.jokeModel.findByIdAndUpdate(id, payload, { new: true });
 

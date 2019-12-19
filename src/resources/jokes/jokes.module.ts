@@ -15,5 +15,6 @@ import JokeSchema from './joke.schema';
     ],
     providers: [JokesService],
     controllers: [JokesController],
+    exports: [JokesService],
 })
 export class JokesModule {}
