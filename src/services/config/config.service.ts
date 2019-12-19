@@ -22,6 +22,7 @@ export class ConfigService {
             'API_KEY',
             'MONGODB_URI',
             'JWT_EXPIRES',
+            'LIMIT',
         ];
         return ENV_VARIABLES.reduce((obj, variable) => {
             obj[variable] = process.env[variable];
@@ -39,6 +40,7 @@ export class ConfigService {
             API_KEY: Joi.string().min(30).max(50).required(),
             MONGODB_URI: Joi.string().default('mongodb://localhost/nest'),
             JWT_EXPIRES: Joi.string().default('1h'),
+            LIMIT: Joi.number().default(10),
         });
         const { error, value: validatedEnvConfig } = envVarsSchema.validate(envConfig);
         if (error) {

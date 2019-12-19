@@ -6,8 +6,6 @@ import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
-    hiddenFields = { password: 0 };
-
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
         private readonly hashService: HashService,

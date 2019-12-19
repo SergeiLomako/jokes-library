@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, BadRequestException, HttpCode, UseGuards, 
 import { AuthService } from './services/auth/auth.service';
 import { UsersService } from './resources/users/users.service';
 import { LoginDto } from './services/auth/dto/login.dto';
-import { CreateUserDto } from './resources/users/dto';
+import { CreateUserDto } from './resources/users/dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
@@ -45,5 +45,6 @@ export class AppController {
     @Get('/me')
     async me(@Request() req) {
         return req.user;
+
     }
 }
