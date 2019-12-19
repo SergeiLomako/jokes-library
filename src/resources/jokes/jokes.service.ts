@@ -1,5 +1,6 @@
 import { Model } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Joke } from './interfaces/joke.interface';
 import { ConfigService } from '../../services/config/config.service';
@@ -22,11 +23,32 @@ export class JokesService {
             query = {joke: {$regex: new RegExp(search)}};
         }
 
-        return await this.jokeModel.paginate(query, { page, limit });
+        return await this.jokeModel.paginate(query, {
+            page,
+            limit,
+            select: 'joke',
+        });
     }
 
-    async findByIdOrFail(id: string): Promise<Joke | null> {
-        const joke = await this.jokeModel.findById(id);
+    async findByIdOrFail(id: string): Promise<Joke> {
+        const [joke] = await this.jokeModel.aggregate([
+            {
+                $match: { _id: Types.ObjectId(id) },
+            },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: '_id',
+                    foreignField: 'joke',
+                    as: 'comments',
+                },
+            },
+            { $project: {
+                __v: 0,
+                ['comments.__v']: 0,
+                },
+            },
+        ]);
 
         if (!joke) {
             throw new NotFoundException();

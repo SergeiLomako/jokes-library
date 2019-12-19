@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, BadRequestException, HttpCode, UseGuards, 
 import { AuthService } from './services/auth/auth.service';
 import { UsersService } from './resources/users/users.service';
 import { LoginDto } from './services/auth/dto/login.dto';
-import { CreateUserDto } from './resources/users/dto/create-user.dto';
+import { UserDto } from './resources/users/dto/user.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
@@ -29,7 +29,7 @@ export class AppController {
     }
 
     @Post('/register')
-    async register(@Body() payload: CreateUserDto): Promise<string> {
+    async register(@Body() payload: UserDto): Promise<string> {
         const emailExists = await this.usersService.findByField('email', payload.email);
 
         if (emailExists) {
