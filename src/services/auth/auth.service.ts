@@ -17,8 +17,9 @@ export class AuthService {
         const { email, password } = payload;
         let result = null;
         const user = await this.userService.findByField('email', email);
+        const passwordsMatch = user && await this.hashService.compare(password, user.password);
 
-        if (user && this.hashService.compare(password, user.password)) {
+        if (passwordsMatch) {
             result = user;
         }
 
