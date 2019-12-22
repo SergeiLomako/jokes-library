@@ -20,4 +20,8 @@ export class CommentsService {
 
         return updatedComment;
     }
+
+    async deleteManyByJokeId(id: string): Promise<any> {
+        return await this.commentModel.deleteMany({ joke: id });
+    }
 }

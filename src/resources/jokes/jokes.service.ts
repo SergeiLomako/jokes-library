@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Joke } from './interfaces/joke.interface';
+import { CommentsService } from '../comments/comments.service';
 import { ConfigService } from '../../services/config/config.service';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class JokesService {
     constructor(
         @InjectModel('Joke') private readonly jokeModel: Model<Joke>,
         private readonly configService: ConfigService,
+        private readonly commentsService: CommentsService,
     ) {}
 
     async findAll({
@@ -76,6 +78,7 @@ export class JokesService {
     }
 
     async delete(id): Promise<any> {
-        return await this.jokeModel.findByIdAndDelete(id);
+        await this.jokeModel.findByIdAndDelete(id);
+        return await this.commentsService.deleteManyByJokeId(id);
     }
 }
