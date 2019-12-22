@@ -28,6 +28,7 @@ export class JokesService {
         return await this.jokeModel.paginate(query, {
             page,
             limit,
+            sort: { createdAt: -1 },
             select: 'joke',
         });
     }
@@ -42,13 +43,24 @@ export class JokesService {
                     from: 'comments',
                     localField: '_id',
                     foreignField: 'joke',
-                    as: 'comments',
+                    as: 'comment',
                 },
             },
-            { $project: {
-                __v: 0,
-                ['comments.__v']: 0,
-                },
+            {
+                $unwind: "$comment"
+            },
+            {
+                $sort: {
+                    "comment.createdAt": -1
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    comments: {
+                        $push: "$comment"
+                    }
+                }
             },
         ]);
 
