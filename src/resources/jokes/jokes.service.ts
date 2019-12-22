@@ -70,6 +70,8 @@ export class JokesService {
                 $project: {
                     joke: 1,
                     ['comments._id']: 1,
+                    ['comments.joke']: 1,
+                    ['comments.user']: 1,
                     ['comments.comment']: 1,
                 }
             },
