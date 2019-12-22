@@ -20,7 +20,7 @@ export class JokesService {
         let query = {};
 
         if (search) {
-            query = {joke: {$regex: new RegExp(search)}};
+            query = {joke: {$regex: new RegExp(search.toLowerCase(), 'i')}};
         }
 
         return await this.jokeModel.paginate(query, {
