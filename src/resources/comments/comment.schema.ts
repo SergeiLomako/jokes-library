@@ -10,4 +10,9 @@ export const CommentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Joke',
     },
+    createdAt : {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
 });

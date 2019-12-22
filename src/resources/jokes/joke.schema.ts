@@ -6,6 +6,11 @@ export const JokeSchema = new mongoose.Schema({
         type: String,
         index: true,
     },
+    createdAt : {
+        type: Date,
+        required: true,
+        default: Date.now,
+    }
 });
 
 JokeSchema.plugin(mongoosePaginate);
